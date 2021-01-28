@@ -1,0 +1,20 @@
+{
+    "schema": "1.0",
+    "type": "whmcs-gateways",
+    "name": "BlueOcean Pay",
+    "license": "proprietary",
+    "category": "payments",
+    "description": {
+        "name": "BlueOcean Pay",
+        "tagline": "BlueOcean Payment Gateway."
+    },
+    "support": {
+        "docs_url": "#"
+    },
+    "authors": [
+        {
+            "name": "#",
+            "homepage": "https:\/\/www.whmcs.com\/"
+        }
+    ]
+}
