@@ -39,7 +39,21 @@ function blueoceanunionpay_link(array $parameters)
 
     return <<<HTML
     <a href="{$response['data']['qrcode']}">
-        <img src="https://cn.unionpay.com/upowhtml/cn/resources/images/footer/unionpay-logo-white.png" alt="">
+        <button type="button" style="
+            height: 44px;
+            width: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+        "><img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/UnionPay_logo.svg" style="width: 36px;
+            height: 30px;
+            margin-right: 8px;"><span style="
+            /* height: fit-content; */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        ">Pay</span></button>
     </a>
 HTML;
 }
