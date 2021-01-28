@@ -5,13 +5,6 @@ use GuzzleHttp\Client;
 class BlueOceanPay
 {
     /**
-     * Fixed.
-     *
-     * @var float
-     */
-    protected $fixed = 0.05;
-
-    /**
      * GuzzleHttp client instance.
      *
      * @var GuzzleHttp\Client
