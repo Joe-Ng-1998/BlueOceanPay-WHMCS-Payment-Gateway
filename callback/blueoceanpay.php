@@ -40,15 +40,16 @@ if ($payload['trade_state'] === 'SUCCESS') {
 
     // 允许误差范围 0.05
     $shouldPay = (float) $invoice->total;
+    $diff = 0;
     if ($shouldPay > $amount && ((($shouldPay - $amount) / $shouldPay) <= 0.05 || ($shouldPay - $amount) <= 0.05)) {
-        $amount += $shouldPay - $amount;
+        $amount += $diff = $shouldPay - $amount;
     }
 
     addInvoicePayment(
         $invoiceId,
         $payload['sn'],
         $amount,
-        $shouldPay > $amount ? $shouldPay - $amount : 0.00,
+        $amount * ($gatewayParams['transaction_fee'] / 100) + $diff,
         $gateways[$payload['trade_type']],
     );
 }

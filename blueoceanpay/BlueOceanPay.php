@@ -55,25 +55,33 @@ class BlueOceanPay
     public function config()
     {
         return [
-            'FriendlyName' => array(
+            'FriendlyName' => [
                 'Type' => 'System',
                 'Value' => 'UnionPay via BlueOcean',
-            ),
-            'appid' => array(
+            ],
+            'appid' => [
                 'FriendlyName' => 'App Id',
                 'Type' => 'text',
                 'Size' => '25',
                 'Default' => '',
                 'Description' => 'Enter your APP ID here',
-            ),
+            ],
 
-            'key' => array(
+            'key' => [
                 'FriendlyName' => 'Pub Key',
                 'Type' => 'text',
                 'Size' => '25',
                 'Default' => '',
                 'Description' => 'Enter your Pub key here',
-            ),
+            ],
+
+            'transaction_fee' => [
+                'FriendlyName' => 'Transaction Fee',
+                'Type' => 'text',
+                'Size' => '25',
+                'Default' => '2.2',
+                'Description' => 'Enter your transaction fee',
+            ]
         ];
     }
 
