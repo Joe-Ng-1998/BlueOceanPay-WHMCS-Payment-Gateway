@@ -22,6 +22,22 @@ if (!$gatewayParams['type']) {
     die("Module Not Activated");
 }
 
+// 锁配置信息.
+$lockDir = __DIR__ . '/blueocean-locks';
+$lockFile = $lockDir . '/' . 'blueocean.sn.' . $payload['sn'] . '.lock';
+
+if (!is_dir($lockDir)) {
+    mkdir($lockDir, 0755, true);
+}
+
+// 检查是否有锁.
+if (file_exists($lockFile)) {
+    echo 'fail';
+    die;
+} else {
+    file_put_contents($lockFile, microtime());
+}
+
 if ($payload['trade_state'] === 'SUCCESS') {
     $invoiceId = explode('-', $payload['out_trade_no'])[0];
     checkCbInvoiceID($invoiceId, $gatewayParams['name']);
@@ -29,7 +45,7 @@ if ($payload['trade_state'] === 'SUCCESS') {
 
     logTransaction($gatewayParams['name'], $_POST, $payload['trade_state']);
 
-    if (! class_exists('BlueOceanPay')) {
+    if (!class_exists('BlueOceanPay')) {
         require __DIR__ . '/../blueoceanpay/BlueOceanPay.php';
     }
 
@@ -39,15 +55,11 @@ if ($payload['trade_state'] === 'SUCCESS') {
     $invoice = Capsule::table('tblinvoices')->find($invoiceId);
 
     // 允许误差范围 0.05
-    $shouldPay = (float) $invoice->total;
+    $shouldPay = (float) $invoice->total + 0.01;
     $diff = 0;
     if ($shouldPay > $amount && ((($shouldPay - $amount) / $shouldPay) <= 0.05 || ($shouldPay - $amount) <= 0.05)) {
         $amount += $diff = $shouldPay - $amount;
     }
-
-    // 临时处理.
-    checkCbInvoiceID($invoiceId, $gatewayParams['name']);
-    checkCbTransID($payload['sn']);
 
     addInvoicePayment(
         $invoiceId,
@@ -58,4 +70,7 @@ if ($payload['trade_state'] === 'SUCCESS') {
     );
 }
 
-echo 'SUCCESS';
+// 解除锁.
+unlink($lockFile);
+
+echo 'success';
