@@ -127,7 +127,6 @@ class BlueOceanPay
         $response = $this->httpClient->post('/payment/pay', [
             'json' => $parameters
         ])->getBody()->getContents();
-        var_dump($parameters, $response);die;
 
         return json_decode($response, true);
     }
@@ -162,9 +161,10 @@ class BlueOceanPay
     public function convertToUSD(float $amount)
     {
         $exchangeRates = $this->exchangeRate();
-        $cny = $amount * $exchangeRates['HKD']['rate'];
 
-        $dest = $cny / $exchangeRates['USD']['rate'];
+        $cny = bcmul($amount, $exchangeRates['HKD']['rate'], 6);
+
+        $dest = bcdiv($cny, $exchangeRates['USD']['rate'], 6);
 
         return round($dest, 2);
     }
@@ -181,9 +181,9 @@ class BlueOceanPay
     public function convertToHKD(float $amount)
     {
         $exchangeRates = $this->exchangeRate();
-        $cny = $amount * $exchangeRates['USD']['rate'];
+        $cny = bcmul($amount, $exchangeRates['USD']['rate'], 6);
 
-        $dest = $cny / $exchangeRates['HKD']['rate'];
+        $dest = bcdiv($cny, $exchangeRates['HKD']['rate'], 6);
 
         return round($dest, 2) * 100;
     }
