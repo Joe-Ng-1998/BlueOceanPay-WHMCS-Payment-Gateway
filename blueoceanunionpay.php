@@ -61,7 +61,7 @@ HTML;
 function blueoceanunionpay_refund(array $parameters) {
     $response =  (new BlueOceanPay($parameters['appid'], $parameters['key']))->refund([
         'sn' => $parameters['transid'],
-        'refund_fee' => $parameters['amount'] - 0.01, // 减掉多加的
+        'refund_fee' => $parameters['amount'], // 减掉多加的
     ]);
 
     return [

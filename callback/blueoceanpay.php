@@ -40,7 +40,7 @@ if ($payload['trade_state'] === 'SUCCESS') {
 
     // 允许误差范围 0.05
     $shouldPay = (float) $invoice->total;
-    if ($shouldPay > $amount && ($shouldPay - $amount) <= 0.05) {
+    if ($shouldPay > $amount && ((($shouldPay - $amount) / $shouldPay) <= 0.05 || ($shouldPay - $amount) <= 0.05)) {
         $amount += $shouldPay - $amount;
     }
 
