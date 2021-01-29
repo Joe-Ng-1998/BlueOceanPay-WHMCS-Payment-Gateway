@@ -24,12 +24,12 @@ if (!$gatewayParams['type']) {
 
 if ($payload['trade_state'] === 'SUCCESS') {
     $invoiceId = explode('-', $payload['out_trade_no'])[0];
-    // checkCbInvoiceID($invoiceId, $gatewayParams['name']);
-    // checkCbTransID($payload['sn']);
+    checkCbInvoiceID($invoiceId, $gatewayParams['name']);
+    checkCbTransID($payload['sn']);
 
     logTransaction($gatewayParams['name'], $_POST, $payload['trade_state']);
 
-    if (!class_exists('BlueOceanPay')) {
+    if (! class_exists('BlueOceanPay')) {
         require __DIR__ . '/../blueoceanpay/BlueOceanPay.php';
     }
 
