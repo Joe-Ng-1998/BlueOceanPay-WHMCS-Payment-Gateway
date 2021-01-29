@@ -45,6 +45,10 @@ if ($payload['trade_state'] === 'SUCCESS') {
         $amount += $diff = $shouldPay - $amount;
     }
 
+    // 临时处理.
+    checkCbInvoiceID($invoiceId, $gatewayParams['name']);
+    checkCbTransID($payload['sn']);
+
     addInvoicePayment(
         $invoiceId,
         $payload['sn'],
