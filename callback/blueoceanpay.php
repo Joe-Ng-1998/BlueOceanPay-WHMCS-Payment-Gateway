@@ -12,6 +12,7 @@ $payload = array_merge($_GET, $_POST, $_REQUEST);
 
 $gateways = [
     'LINK' => 'blueoceanunionpay',
+    'WAPPAY' => 'blueoceanalipay',
 ];
 
 // Fetch gateway configuration parameters.
@@ -26,14 +27,13 @@ if (!$gatewayParams['type']) {
 $lockDir = __DIR__ . '/blueocean-locks';
 $lockFile = $lockDir . '/' . 'blueocean.sn.' . $payload['sn'] . '.lock';
 
-if (!is_dir($lockDir)) {
+if (! is_dir($lockDir)) {
     mkdir($lockDir, 0755, true);
 }
 
 // 检查是否有锁.
 if (file_exists($lockFile)) {
-    echo 'fail';
-    die;
+    echo 'fail';die;
 } else {
     file_put_contents($lockFile, microtime());
 }
@@ -45,8 +45,8 @@ if ($payload['trade_state'] === 'SUCCESS') {
 
     logTransaction($gatewayParams['name'], $_POST, $payload['trade_state']);
 
-    if (!class_exists('BlueOceanPay')) {
-        require __DIR__ . '/../blueoceanpay/BlueOceanPay.php';
+    if (! class_exists('BlueOceanPay')) {
+        require_once __DIR__ . '/../blueoceanpay/BlueOceanPay.php';
     }
 
     $amount = (new BlueOceanPay($gatewayParams['appid'], $gatewayParams['key']))->convertToUSD($payload['total_fee'] / 100);

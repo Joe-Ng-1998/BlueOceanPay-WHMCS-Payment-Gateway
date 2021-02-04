@@ -4,21 +4,21 @@ if (!defined("WHMCS")) {
     die("This file cannot be accessed directly");
 }
 
-require __DIR__ . '/blueoceanpay/BlueOceanPay.php';
+require_once __DIR__ . '/blueoceanpay/BlueOceanPay.php';
 
 function blueoceanunionpay_MetaData()
 {
-    return array(
+    return [
         'DisplayName' => 'UnionPay via BlueOcean',
         'APIVersion' => '1.1', // Use API Version 1.1
         'DisableLocalCreditCardInput' => true,
         'TokenisedStorage' => false,
-    );
+    ];
 }
 
 function blueoceanunionpay_config()
 {
-    return (new BlueOceanPay)->config();
+    return (new BlueOceanPay)->config('UnionPay');
 }
 
 function blueoceanunionpay_link(array $parameters)
@@ -56,20 +56,4 @@ function blueoceanunionpay_link(array $parameters)
         ">Pay</span></button>
     </a>
 HTML;
-}
-
-function blueoceanunionpay_refund(array $parameters) {
-    $response =  (new BlueOceanPay($parameters['appid'], $parameters['key']))->refund([
-        'sn' => $parameters['transid'],
-        'refund_fee' => $parameters['amount'], // 减掉多加的
-    ]);
-
-    return [
-        // 'success' if successful, otherwise 'declined', 'error' for failure
-        'status' => $response['message'] === 'SUCCESS' ? 'success' : 'error',
-        // Data to be recorded in the gateway log - can be a string or array
-        'rawdata' => $response,
-        // Unique Transaction ID for the refund transaction
-        'transid' => $response['data']['out_refund_no'],
-    ];
 }

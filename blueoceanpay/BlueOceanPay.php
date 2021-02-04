@@ -50,14 +50,16 @@ class BlueOceanPay
     /**
      * WHMCS configuration.
      *
+     * @param  string  $name
+     *
      * @return  array
      */
-    public function config()
+    public function config(string $name)
     {
         return [
             'FriendlyName' => [
                 'Type' => 'System',
-                'Value' => 'UnionPay via BlueOcean',
+                'Value' => $name . ' via BlueOcean',
             ],
             'appid' => [
                 'FriendlyName' => 'App Id',
