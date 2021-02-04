@@ -33,6 +33,8 @@ function blueoceanalipay_link(array $parameters)
         'notify_url' => $systemUrl . '/modules/gateways/callback/blueoceanpay.php',
     ]);
 
+    $invoiceStatus = $systemUrl. '/modules/gateways/blueoceanpay/invoice_status.php?id=' . $parameters['invoiceid'];
+
     if ($response['message'] !== 'success') {
         return '<span style="color:red;">'. $response['message'] .'</red>';
     }
@@ -55,9 +57,15 @@ function blueoceanalipay_link(array $parameters)
             correctLevel : QRCode.CorrectLevel.H
         });
 
-        setTimeout(() => {
-            window.location.reload(true)
-        }, 3000);
+        setInterval(() => {
+            fetch("{$invoiceStatus}")
+                .then(r => r.json())
+                .then(r => {
+                    if (r.status === 'Paid') {
+                        window.location.reload(true)
+                    }
+                })
+        }, 1000);
     </script>
 HTML;
 }
