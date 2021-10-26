@@ -134,7 +134,7 @@ class BlueOceanPay
         $parameters['refund_fee'] = $this->convertToHKD($parameters['refund_fee']);
         $parameters = $this->payloadWrapper($parameters);
 
-        $response = $this->httpClient->post('/payment/pay', [
+        $response = $this->httpClient->post('/payment/refund', [
             'json' => $parameters
         ])->getBody()->getContents();
 
