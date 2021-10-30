@@ -137,6 +137,11 @@ class BlueOceanPay
         $response = $this->httpClient->post('/payment/refund', [
             'json' => $parameters
         ])->getBody()->getContents();
+        
+        file_put_contents(__DIR__ . './refund.log', json_encode([
+            'request' => $parameters,
+            'response' => $response,
+        ]));
 
         return json_decode($response, true);
     }
