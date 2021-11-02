@@ -78,7 +78,7 @@ function blueoceanalipay_refund(array $parameters) {
 
     return [
         // 'success' if successful, otherwise 'declined', 'error' for failure
-        'status' => $response['message'] === 'SUCCESS' ? 'success' : 'error',
+        'status' => $response['code'] == 200 ? 'success' : 'error',
         // Data to be recorded in the gateway log - can be a string or array
         'rawdata' => $response,
         // Unique Transaction ID for the refund transaction
